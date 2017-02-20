@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="shortcut icon" href="/img/favicon.ico">
   <link rel="stylesheet" href="/css/normalize.css">
   <link rel="stylesheet" href="/css/Torpedo.css">
   <link rel="stylesheet" href="/css/yewmint.css">
-  <title>主页 | Yewth</title>
+  <title>Chrome Extention Developtment Tutorial | Yewth</title>
 </head>
 
   <body>
@@ -30,7 +31,7 @@
   <h1 id="-" class="article-title">Chrome Extention Developtment Tutorial</h1>
   <p class="article-date">2017-02-20</p>
   <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p><strong>Chrome extension</strong> consist of several html/css/js files and <code>manifest.json</code>.</p>
-<p>Treeview of a extension is usually like this:</p>
+<p>Treeview of an extension is usually like this:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- extension</div><div class="line">  - html</div><div class="line">    - ...</div><div class="line">  - css</div><div class="line">    - ...</div><div class="line">  - js</div><div class="line">    - ...</div><div class="line">  - manifest.json</div></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>In term of <em>funcion</em>, extension can be divided into 5 parts:</p>
@@ -71,7 +72,7 @@
 <p>We can get deatils by downloadId like this:</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chrome.downloads.search(&#123; <span class="attr">id</span>: downloadId &#125;, <span class="function"><span class="keyword">function</span>(<span class="params">downloadItem</span>) </span>&#123;&#125;);</div></pre></td></tr></table></figure>
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>So far we’ve created a frame of extension, the rest work is just like<br>web development. Open you mind to innovation and create best extension.</p>
-<p>THE END</p>
+<p><strong>THE END</strong></p>
 
 </article>
 
