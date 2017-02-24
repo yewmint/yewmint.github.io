@@ -35,6 +35,7 @@
 <p>In this article, I improve the algorithm used to detect intersection since the<br>algorithm from Nicky may return NaN intersecion and doesn’t work when <code>dx == 0</code>.</p>
 <a id="more"></a>
 <h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>Click <a href="/raycast.html">Demo</a> which is coded by myself.</p>
+<p>Source code is <a href="https://github.com/yewmint/ViewportDetection" target="_blank" rel="external">here</a>.</p>
 <p>Move your cursor, you’ll see a pink area which is your calculated viewport.</p>
 <h2 id="Intersection-between-Ray-and-Wall"><a href="#Intersection-between-Ray-and-Wall" class="headerlink" title="Intersection between Ray and Wall"></a>Intersection between Ray and Wall</h2><p>First step is to get intersection between ray and wall.<br>Take a look at parametric equation of a segment:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">x = x0 + dx * t</div><div class="line">y = y0 + dy * t</div><div class="line">(0 &lt;= t &lt;= 1)</div></pre></td></tr></table></figure>
