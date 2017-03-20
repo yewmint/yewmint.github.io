@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/css/normalize.css">
   <link rel="stylesheet" href="/css/Torpedo.css">
   <link rel="stylesheet" href="/css/yewmint.css">
-  <title>2D-visible-area | Yewth</title>
+  <title>2D Visible Area | Yewth</title>
 </head>
 
   <body>
@@ -28,13 +28,13 @@
 </header>
 
       <article class="article">
-  <h1 id="-" class="article-title">2D-visible-area</h1>
+  <h1 id="-" class="article-title">2D Visible Area</h1>
   <p class="article-date">2017-02-22</p>
   <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The author of indie game <code>Nothing to Hide</code>, Nicky Case, released<br>a note <a href="http://ncase.me/sight-and-light/" target="_blank" rel="external">SIGHT&amp;LIGHT</a> telling how to<br>create a 2D visible area effect. This is really a fantastic technique.</p>
 <p>However in my words, the writting style of author is a little bit poor.<br>Many details of this technique has not been expressed properly and<br>exhaustively. So I might narrate it once again.</p>
 <p>In this article, I improve the algorithm used to detect intersection since the<br>algorithm from Nicky may return NaN intersecion and doesn’t work when <code>dx == 0</code>.</p>
 <a id="more"></a>
-<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>Click <a href="/raycast.html">Demo</a> which is coded by myself.</p>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>Click <a href="/demos/raycast.html">Demo</a> which is coded by myself.</p>
 <p>Source code is <a href="https://github.com/yewmint/ViewportDetection" target="_blank" rel="external">here</a>.</p>
 <p>Move your cursor, you’ll see a pink area which is your calculated viewport.</p>
 <h2 id="Intersection-between-Ray-and-Wall"><a href="#Intersection-between-Ray-and-Wall" class="headerlink" title="Intersection between Ray and Wall"></a>Intersection between Ray and Wall</h2><p>First step is to get intersection between ray and wall.<br>Take a look at parametric equation of a segment:</p>
