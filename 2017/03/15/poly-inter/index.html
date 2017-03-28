@@ -31,7 +31,7 @@
   <h1 id="-" class="article-title">多边形交集</h1>
   <p class="article-date">2017-03-15</p>
   <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>给定两个多边形，求它们的交集，如下图所示</p>
-<p><img src="http://tuch.oss-cn-shanghai.aliyuncs.com/Untitled-1.png" alt="intersect"></p>
+<p><img src="//tuch.oss-cn-shanghai.aliyuncs.com/Untitled-1.png" alt="intersect"></p>
 <p>点击<a href="/demos/polyinter.html">demo</a>查看效果，包含两种算法<br>源码在<a href="https://github.com/yewmint/polyinter" target="_blank" rel="external">github</a></p>
 <a id="more"></a>
 <p>在分析这个问题之前，我们约定：</p>
@@ -49,7 +49,7 @@
 <li>顺着切多边形的边前进，进入了原多边形</li>
 </ol>
 <p>当我们回到最初的交点，走过的边则构成了交集多边形</p>
-<h2 id="线段交点的出入性"><a href="#线段交点的出入性" class="headerlink" title="线段交点的出入性"></a>线段交点的出入性</h2><p><img src="http://tuch.oss-cn-shanghai.aliyuncs.com/Untitled-2.png" alt="intersect"></p>
+<h2 id="线段交点的出入性"><a href="#线段交点的出入性" class="headerlink" title="线段交点的出入性"></a>线段交点的出入性</h2><p><img src="//tuch.oss-cn-shanghai.aliyuncs.com/Untitled-2.png" alt="intersect"></p>
 <p>以上算法中，2、3步涉及到交点的出入性，比较费解</p>
 <p>这里，我们作两个定义：</p>
 <blockquote>
@@ -61,7 +61,7 @@
 <li>如果当前节点是出点，则顺着原多边形正向前进</li>
 <li>如果当前结点是入点，则顺着切多边形正向前进</li>
 </ol>
-<p><img src="http://tuch.oss-cn-shanghai.aliyuncs.com/3.png" alt="intersect"></p>
+<p><img src="//tuch.oss-cn-shanghai.aliyuncs.com/3.png" alt="intersect"></p>
 <p>我们继续使用上一篇文章中的算法求交点，为了获得交点的出入性，<br>我们设产生交点的两条向量v1和v2，分别是切多边形和原多边形的边</p>
 <p>如上图所示</p>
 <p>作v1的a点到v2的a点的向量va，v1的a点到v2的b点的向量vb<br>此时计算<code>va x vb</code>，由向量计算，可知叉乘z分量大于零<br>故此交点为出点</p>
@@ -76,7 +76,7 @@
 </ol>
 <p>为了求点是否在多边形内，我们设两个多边形都是凸多边形<br>则当点p在所有线段向量的左侧时，p包含在多边形内</p>
 <p>求点p在向量左侧的算法类似于出入点，如果已知交点为出点，则上图中v1的起点必在左侧：</p>
-<p><img src="http://tuch.oss-cn-shanghai.aliyuncs.com/4.png" alt="intersect"></p>
+<p><img src="//tuch.oss-cn-shanghai.aliyuncs.com/4.png" alt="intersect"></p>
 <p>设点p，线段v，同上取va、vb，叉乘z分量大于0时，点p在线段v左侧：</p>
 <figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># left.coffee</span></div><div class="line">va = <span class="keyword">new</span> vec(p, v2.a)</div><div class="line">vb = <span class="keyword">new</span> vec(p, v2.b)</div><div class="line">vc = crossProduct(va, vb)</div><div class="line"><span class="keyword">if</span> vc.z &gt; <span class="number">0</span></div><div class="line">  <span class="keyword">return</span> <span class="string">'left'</span></div><div class="line"><span class="keyword">else</span></div><div class="line">  <span class="keyword">return</span> <span class="string">'right'</span></div></pre></td></tr></table></figure>
 <p>这种方法要求多边形均为凸多边形，对于凹多边形可以通过凸切割的方法把它切成多个凸多边形</p>
