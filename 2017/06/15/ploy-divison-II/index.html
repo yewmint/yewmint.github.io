@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="shortcut icon" href="/img/favicon.ico">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/Torpedo.css">
+  <link rel="stylesheet" href="/css/yewmint.css">
+  <title>凹多边形的凸切分 EP2 | Yewth</title>
+</head>
+
+  <body>
+    <div id="wrapper">
+      <header id="page-header">
+  <div id="header-title">
+    <a href="/">Yewth</a>
+  </div>
+  <div id="header-nav">
+    <ul>
+      
+        <li><a target="_blank" class="menu-item " href="/">Index</a></li>
+      
+        <li><a target="_blank" class="menu-item " href="https://github.com/yewmint">GITHUB</a></li>
+      
+    </ul>
+</header>
+
+      <article class="article">
+  <h1 id="-" class="article-title">凹多边形的凸切分 EP2</h1>
+  <p class="article-date">2017-06-15</p>
+  <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>上文探讨的图切分方法并不完美，在下图中，会出现BUG：</p>
+<p><img src="http://tuch.oss-cn-shanghai.aliyuncs.com/gueb9437g34j3.png" alt="polygon"></p>
+<p>根据论文《平面多边形域的快速约束Delaunay三角化》，实现普适化的凸切分算法。</p>
+<a id="more"></a>
+<h2 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h2><p><a href="/demos/polyslice.html">DEMO</a>和<a href="https://github.com/yewmint/polyslice" target="_blank" rel="external">源码</a></p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>算法一步一步将多边形切成小三角形。</p>
+<ol>
+<li>任取一条边，赋给<code>e0</code>。</li>
+<li>找出一个点<code>p0</code>，使其和<code>e0</code>能组成一个三角形，满足在多边形内部，并且不包含其他点。</li>
+<li>将三角形切除，对剩下的多边形，回到步骤1。</li>
+</ol>
+<h2 id="DT点"><a href="#DT点" class="headerlink" title="DT点"></a>DT点</h2><p>算法的难点集中在第2步，称第2步中的点<code>p0</code>为<strong>DT点</strong>。</p>
+<p>为求出线段的DT点，我们定义线段的<strong>可见点</strong>，满足：</p>
+<ol>
+<li>在线段左侧，保证点不会在多边形外部。</li>
+<li>线段的端点和可见点的连线，可以是多边形的边，或者不于其他线段相交。</li>
+</ol>
+<p>可见，一个<strong>DT点</strong>一定是<strong>可见点</strong>。<br>而实际上，<strong>DT点</strong>是所有<strong>可见点</strong>中，和线段构成的外接圆面积最小的点。</p>
+<p>获取DT点算法：</p>
+<ol>
+<li>从边<code>e0</code>的可见点中任取一点<code>p0</code>。</li>
+<li><code>e0</code>的端点和<code>p0</code>构成一对向量<code>v0</code>和<code>v1</code>。</li>
+<li>利用叉乘，取得<code>v0</code>和<code>v1</code>角度值<code>r</code>。</li>
+<li>使得<code>r</code>最大的<code>p0</code>为<strong>DT点</strong></li>
+</ol>
+<p>获取可见点：</p>
+<ol>
+<li>除边的端点以外，任取一个点<code>p0</code></li>
+<li><code>e0</code>的端点和<code>p0</code>构成一对向量<code>v0</code>和<code>v1</code></li>
+<li>如果<code>v0</code>和<code>v1</code>是多边形的某条边，或者不与任意边相交，则为<strong>可见点</strong></li>
+</ol>
+<p>判断两条边相交：</p>
+<ol>
+<li>通过跨立测试</li>
+<li>通过快速排斥测试</li>
+</ol>
+<p><strong>全文完</strong></p>
+
+</article>
+
+      <footer>
+  <div class="footer">
+    &copy; 2015-2016 Yewmint, All rights reserved.
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>

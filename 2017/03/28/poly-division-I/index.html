@@ -34,7 +34,7 @@
 <p>为了在凹多边形中应用凸多边形的算法，可以构造一个<strong>凸切分算法</strong>，<br>把凹多边形切割多个凸多边形</p>
 <p><img src="//tuch.oss-cn-shanghai.aliyuncs.com/5.png" alt="division"></p>
 <a id="more"></a>
-<p>演示用的Demo在这里：<a href="/demos/polydivision.html">Demo</a></p>
+<p>演示用的Demo在这里：<a href="/demos/polydivision.html">Demo</a><br><a href="https://github.com/yewmint/polydivision" target="_blank" rel="external">源码</a></p>
 <h2 id="切分凹角"><a href="#切分凹角" class="headerlink" title="切分凹角"></a>切分凹角</h2><p>有一个角的内角大于180度，这是凹多边形最明显的特征，称为<strong>凹角</strong><br>首先尝试通过切分去掉所有的凹角</p>
 <p>设当前边为<code>s0</code>，后续第n条边为<code>sn</code><br>通过差乘<code>(s0 x s1).z &lt; 0</code>判断当前边和下一条边之间的角是否为凹角</p>
 <p>如果边<code>s0</code>的下一个角为凹角，则遍历之后所有的点<code>pt</code><br>当<code>(s0 x (s0.b, pt)).z &gt; 0</code>时，则意味着划线<code>(s0.b, pt)</code>，可以将当前的凹角切分为凸角</p>
