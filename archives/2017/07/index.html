@@ -32,7 +32,10 @@
     <a class="article-item-title" href="/2017/07/13/nav-corner/">视线法导航网格</a>
     <p class="article-item-date">2017-07-13</p>
     <p>
-      
+      <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文的<a href="/demos/nav-corner.html">DEMO</a>和<a href="https://github.com/yewmint/demo-nav-corner">GITHUB</a></p>
+<p>常用的导航算法有两种：路点导航和导航网格。</p>
+<p><strong>路点导航</strong>（Way Point Navigation）类似于无向图，基于地图上的离散点和点之间给定的通道进行寻路。给定起点和终点，利用Dijkstra或者A Star算法计算出路径。作为一个基础寻路算法，路点导航简单易行，适用于Tile Based游戏。</p>
+<p><strong>导航网格</strong>（Navigation Mesh）是一种基于2D平面的导航，可以寻找平面上任意两点之间的路径。它将2D平面分割为许多凸多边形，称为网格，作为寻路的基本元素。对于自由度更高的游戏，导航网格提供了更高效、更顺滑的寻路能力，因此更加流行。</p>
     </p>
     <p>
       <a href="/2017/07/13/nav-corner/">continue -&gt;</a>

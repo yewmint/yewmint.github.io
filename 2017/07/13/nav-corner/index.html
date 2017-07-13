@@ -30,10 +30,11 @@
       <article class="article">
   <h1 id="-" class="article-title">视线法导航网格</h1>
   <p class="article-date">2017-07-13</p>
-  <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文的<a href="/demos/nav-corner.html">DEMO</a>和GITHUB</p>
+  <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文的<a href="/demos/nav-corner.html">DEMO</a>和<a href="https://github.com/yewmint/demo-nav-corner" target="_blank" rel="external">GITHUB</a></p>
 <p>常用的导航算法有两种：路点导航和导航网格。</p>
 <p><strong>路点导航</strong>（Way Point Navigation）类似于无向图，基于地图上的离散点和点之间给定的通道进行寻路。给定起点和终点，利用Dijkstra或者A Star算法计算出路径。作为一个基础寻路算法，路点导航简单易行，适用于Tile Based游戏。</p>
 <p><strong>导航网格</strong>（Navigation Mesh）是一种基于2D平面的导航，可以寻找平面上任意两点之间的路径。它将2D平面分割为许多凸多边形，称为网格，作为寻路的基本元素。对于自由度更高的游戏，导航网格提供了更高效、更顺滑的寻路能力，因此更加流行。</p>
+<a id="more"></a>
 <h2 id="导航网格"><a href="#导航网格" class="headerlink" title="导航网格"></a>导航网格</h2><p>算法的步骤如下：</p>
 <ol>
 <li>将地图分割为网格，起点所在网格为<code>m1</code> ，终点所在网格为<code>m2</code></li>
@@ -41,7 +42,8 @@
 <li>计算起点到终点的最短折线，要求经过所有相交边<code>edges</code></li>
 </ol>
 <p>详细解释：<br>地图上的可行走区域一般是多边形，首先利用多边形凸分割算法，将其分割为凸网格。通过公共边，网格可以和四周的其它网格连接。因此可以利用A Star算法，计算出从<code>m1</code>到<code>m2</code>所经过的网格<code>mc</code>。由于网格均是凸多边形，所以如果有一条连接起点和终点的最短折线，同时经过<code>mc</code>之间的相交边，则是最短路径。</p>
-<h2 id="视线法求最短折线"><a href="#视线法求最短折线" class="headerlink" title="视线法求最短折线"></a>视线法求最短折线</h2><p>一个简单的网格导航如下所示。</p>
+<h2 id="视线法求最短折线"><a href="#视线法求最短折线" class="headerlink" title="视线法求最短折线"></a>视线法求最短折线</h2><p>一个简单的网格导航如下所示:</p>
+<p><img src="http://tuch.oss-cn-shanghai.aliyuncs.com/ew54yhgrje5t.png" alt="nav"></p>
 <p>其中，灰色方块是路径上的网格<code>mc</code>，青色边是<code>mc</code>之间的相交边<code>edges</code>，算法需要找出经过<code>edges</code>的最短折线。因为网格都是凸多边形，问题可以转化为在<code>edges</code>上寻找折线的拐点<code>corners</code>。</p>
 <p>视线法算法步骤：</p>
 <ol>
@@ -51,6 +53,7 @@
 <li>若视线不相交，<code>v1</code>在<code>v2</code>左侧时取<code>v1</code>左顶点为拐点，否则取右顶点</li>
 <li>将拐点作为新的原点，回到步骤1</li>
 </ol>
+<p><img src="http://tuch.oss-cn-shanghai.aliyuncs.com/q0gyfh3.png" alt="nav"></p>
 <p>详细解释：<br>初始时，以起点为原点<code>o</code>，作两条射线指向第一个相交边的顶点，其包围的扇形就是当前的视线<code>v1</code>。对于下一个相交边，同样作视线区域<code>v2</code>。如果<code>v1</code>和<code>v2</code>有重合部分，则重合部分成为新的视线<code>v1</code>，继续和下一个相交边计算。如果<code>v1</code>和<code>v2</code>没有重合部分，则判断<code>v1</code>和<code>v2</code>的相对位置。如果<code>v2</code>在<code>v1</code>左边，则<code>v1</code>的左顶点作为拐点，反之<code>v1</code>的右顶点作为拐点，将此拐点作为新的原点<code>o</code>继续计算。</p>
 <p>在本文的DEMO中，第一步如下图所示，视线<code>v1</code>和<code>v2</code>相交，则取中间部分即<code>v2</code>作为新的<code>v1</code>。</p>
 <p>然而在如下图所示步骤时，<code>v1</code>和<code>v2</code>没有相交，此时<code>v2</code>在<code>v1</code>左侧，则<code>v1</code>的左顶点，即粉红色点，成为了拐点。</p>
