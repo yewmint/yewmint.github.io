@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="shortcut icon" href="/img/favicon.ico">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/Torpedo.css">
+  <link rel="stylesheet" href="/css/yewmint.css">
+  <title>贝塞尔曲线 | Yewth</title>
+</head>
+
+  <body>
+    <div id="wrapper">
+      <header id="page-header">
+  <div id="header-title">
+    <a href="/">Yewth</a>
+  </div>
+  <div id="header-nav">
+    <ul>
+      
+        <li><a target="_blank" class="menu-item " href="/">Index</a></li>
+      
+        <li><a target="_blank" class="menu-item " href="https://github.com/yewmint">GITHUB</a></li>
+      
+    </ul>
+</header>
+
+      <article class="article">
+  <h1 id="-" class="article-title">贝塞尔曲线</h1>
+  <p class="article-date">2017-09-19</p>
+  <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>贝塞尔曲线（Bezier Curve）是一种重要的数学工具，可以利用少量的点生成任意光滑的曲线。贝塞尔曲线最初由法国工程师皮埃尔·贝塞尔（Pierre Bezier）提出，他运用贝塞尔曲线设计汽车的主体部分。随后它被大规模用于设计领域中，例如Photoshop中的钢笔工具，还有动画中的缓动特效。</p>
+<a id="more"></a>
+<p>DEMO在<a href="">这里</a>，源码在<a href="">GITHUB</a>。</p>
+<p>顺带一提，贝塞尔曲线和弗里德里希·威廉·贝塞尔(Friedrich Wilhelm Bessel)提出的贝塞尔函数（Bessel Functions）是不一样的，只是译名相同而已。</p>
+<h2 id="2阶贝塞尔曲线"><a href="#2阶贝塞尔曲线" class="headerlink" title="2阶贝塞尔曲线"></a>2阶贝塞尔曲线</h2><p>给定一些点，即可生成一条贝塞尔曲线，这些点称为<strong>控制点</strong>。由3个控制点生成的贝塞尔曲线称为<strong>二阶贝塞尔曲线</strong>，如下图所示：</p>
+<p><img src="" alt=""></p>
+<p>生成过程很简单，对于三个控制点A、B、C：</p>
+<ol>
+<li>分别作线段AB，BC。<br><img src="" alt=""></li>
+<li>取{ t | 0 &lt;= t &lt;= 1 }，在AB取点D，使得AD / AB = t，同理在BC取点E。<br><img src="" alt=""></li>
+<li>连接DE，在DE中取F，使得DF / DE = t。<br><img src="" alt=""></li>
+<li>所有t值对应的F点集合即为贝塞尔曲线。<br><img src="" alt=""></li>
+</ol>
+<p>下图是matlab所作动画，很直观地表现了上面的算法：<br><img src="" alt=""></p>
+<h2 id="n阶贝塞尔曲线"><a href="#n阶贝塞尔曲线" class="headerlink" title="n阶贝塞尔曲线"></a>n阶贝塞尔曲线</h2><p>贝塞尔曲线实际上可以取任意复数个控制点，由n + 1个控制点组成的贝塞尔曲线被称为<strong>n阶贝塞尔曲线</strong>。Photoshop中的钢笔和缓动动画中的缓动曲线都是3阶贝塞尔曲线。</p>
+<p>作n阶贝塞尔曲线的方法是一个递归的过程：</p>
+<ol>
+<li>对n+1个控制点连接出n条线段。</li>
+<li>同2阶贝塞尔曲线，在n条线上取n个t分割点。</li>
+<li>对于n个分割点，回到步骤1，直到分割点只剩1个，记为F点。</li>
+<li>对于所有t，对应的F点集即为贝塞尔曲线。</li>
+</ol>
+<p>可以看出，上述算法是个尾递归调用，DEMO中的蓝色贝塞尔曲线就是用递归法画出。n阶贝塞尔曲线的演示可以看<a href="">这里</a>。</p>
+<h2 id="贝塞尔曲线通式"><a href="#贝塞尔曲线通式" class="headerlink" title="贝塞尔曲线通式"></a>贝塞尔曲线通式</h2><p>n阶贝塞尔曲线可以写成t的参数通式方程：</p>
+<p>B(t) = Σ(PTi <em> C(n, i) </em> (1 - t) ^ (n - i) * t ^ i)</p>
+<p>通式可以减小递归调用时的切换消耗，DEMO中的红色贝塞尔曲线就是用通式法绘制的。但是实测中，由于V8引擎尾递归的高效率，递归绘制效率反而高于通式绘制，相对于通式绘制只消耗60%的时间。</p>
+<p><strong>全文完</strong></p>
+
+</article>
+
+      <footer>
+  <div class="footer">
+    &copy; 2015-2016 Yewmint, All rights reserved.
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>

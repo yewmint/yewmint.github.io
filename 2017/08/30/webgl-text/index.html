@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="shortcut icon" href="/img/favicon.ico">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/Torpedo.css">
+  <link rel="stylesheet" href="/css/yewmint.css">
+  <title>WebGL中的文字显示 | Yewth</title>
+</head>
+
+  <body>
+    <div id="wrapper">
+      <header id="page-header">
+  <div id="header-title">
+    <a href="/">Yewth</a>
+  </div>
+  <div id="header-nav">
+    <ul>
+      
+        <li><a target="_blank" class="menu-item " href="/">Index</a></li>
+      
+        <li><a target="_blank" class="menu-item " href="https://github.com/yewmint">GITHUB</a></li>
+      
+    </ul>
+</header>
+
+      <article class="article">
+  <h1 id="-" class="article-title">WebGL中的文字显示</h1>
+  <p class="article-date">2017-08-30</p>
+  <p>利用WebGL显示文字的操作比较复杂，常用的是三种方法：</p>
+<ol>
+<li>canvas绘制文字贴图</li>
+<li>贴图字库</li>
+<li>path字库</li>
+</ol>
+<a id="more"></a>
+<h2 id="1-Canvas绘制文字贴图"><a href="#1-Canvas绘制文字贴图" class="headerlink" title="1. Canvas绘制文字贴图"></a>1. Canvas绘制文字贴图</h2><p>首先将文字绘制在新建的canvas中，必须设置canvas的宽高：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">let cvs = document.createElement(&apos;canvas&apos;)</div><div class="line">cvs.width = width</div><div class="line">cvs.height = height</div><div class="line"></div><div class="line">let ctx = cvs.getContext(&apos;2d&apos;)</div><div class="line">ctx.fillText(text, x, y)</div></pre></td></tr></table></figure>
+<p>接下来提取文字部分的图像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">let data = ctx.getImageData(sx, sy, sw, sh)</div></pre></td></tr></table></figure>
+<p>对于webgl，ImageData对象和Image对象是一样的。因此可以直接调用gl.texImage2D，将其转化为texture。</p>
+<p>这种方法最简洁，浏览器支持的字体都可以用。但是本质还是2d绘制，对于经常变化的文字效率较低。</p>
+<h2 id="2-贴图字库"><a href="#2-贴图字库" class="headerlink" title="2. 贴图字库"></a>2. 贴图字库</h2><p>利用<a href="http://www.angelcode.com/products/bmfont/" target="_blank" rel="external">BMFont</a>将tff格式的字体文件，制作为贴图图片：</p>
+<p><img src="/images/IMG_1950.PNG" alt="bmfont"></p>
+<p>BMFont可以同时输出一个元数据文件，其中包含了每一个字符的宽高、步长和准线位置等排版信息。使用时，利用排版引擎确定好字符的位置后，将对应文字贴图贴上即可。</p>
+<p>这种方法也较方便，绘图速度最快。但是其大大增加了字库的体积，一个中文字库图像可能高达几十兆，对于WEB应用来说无法接受。所以这个版本用在electron上更合适。</p>
+<h2 id="3-Path字库"><a href="#3-Path字库" class="headerlink" title="3. Path字库"></a>3. Path字库</h2><p>利用<a href="https://everythingfonts.com/" target="_blank" rel="external">Everything Fonts</a>将ttf转换为svg，将path切割为三角形后直接在webgl中绘制。</p>
+<p>这种方法包含了上面两种方法轻量和快速的优点，也集成了它们的复杂度，不仅要自己实现排版引擎，还得将path进行三角分割，实现难度大。</p>
+<p><strong>全文完</strong></p>
+
+</article>
+
+      <footer>
+  <div class="footer">
+    &copy; 2015-2016 Yewmint, All rights reserved.
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>
