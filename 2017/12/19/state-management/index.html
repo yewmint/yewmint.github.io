@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="shortcut icon" href="/img/favicon.ico">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/Torpedo.css">
+  <link rel="stylesheet" href="/css/yewmint.css">
+  <title>状态数据管理 | Yewth</title>
+</head>
+
+  <body>
+    <div id="wrapper">
+      <header id="page-header">
+  <div id="header-title">
+    <a href="/">Yewth</a>
+  </div>
+  <div id="header-nav">
+    <ul>
+      
+        <li><a target="_blank" class="menu-item " href="/">Index</a></li>
+      
+        <li><a target="_blank" class="menu-item " href="https://github.com/yewmint">GITHUB</a></li>
+      
+    </ul>
+</header>
+
+      <article class="article">
+  <h1 id="-" class="article-title">状态数据管理</h1>
+  <p class="article-date">2017-12-19</p>
+  <p>游戏开发中，需要管理整个世界的状态，如人物的位置、物品栏的内容等。在状态数据量变得庞大时，选择合适的管理方法尤为重要。</p>
+<a id="more"></a>
+<h2 id="1-状态分散在代码"><a href="#1-状态分散在代码" class="headerlink" title="1. 状态分散在代码"></a>1. 状态分散在代码</h2><p>最传统的数据管理方法，是数据随着逻辑代码而分散在整个模块中。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">class Hero&#123;</div><div class="line">  direction = 0</div><div class="line">  move () &#123; /** **/ &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>有两种架构使用这种方法，Render Tree和Game Object。</p>
+<p>Render Tree提倡以渲染为中心，构建一棵渲染树，将状态绑定在各自的渲染节点上。例如，对于游戏的主角，就可以抽象为一张人物图，然后将移动方向绑定在人物图上。</p>
+<p>Game Object是Unity等可视化引擎提供的架构。它将游戏里的所有事物抽象为Game Object，通过在Game Object上绑定各种Component实现功能。例如渲染Component、移动控制Component。</p>
+<p>这种方法十分直观，对于新手来说很容易理解。它适合快速实验想法，但是对大规模的开发就力不从心。它将代码和数据纠缠在一起，所以缺点很明显：</p>
+<ol>
+<li>状态过多时难以阅读，不易扩展。</li>
+<li>状态在类内部被修改，没有任何记录，DEBUG时很难确定BUG的位置。</li>
+<li>类不是纯数据对象，持久化化困难。</li>
+</ol>
+<h2 id="2-状态集中管理"><a href="#2-状态集中管理" class="headerlink" title="2. 状态集中管理"></a>2. 状态集中管理</h2><p>为了解决逻辑和数据的耦合，有许多新架构被提出来。例如ECS架构和Redux。</p>
+<p>ECS架构是最近的游戏《守望先锋》中所使用的架构，在GDC 2017上分享出来的。ECS的全称是Entity Component System，是一种改进的Game Object系统。Entity是游戏的实体对象，由Component组合构成。Component是实体的某种特性，例如位置、行动方向或者物理体积。与Game Object系统所不同的是，Component是纯数据集，不包含任何逻辑。而System就是纯逻辑集，负责更新Entity中的Component。</p>
+<p>Redux并不是游戏引擎中间件，而是一个用于网页程序的状态管理器。它将所有的数据存放在一棵树上，然后连接到UI上，由UI来展示数据。</p>
+<p>单独把数据独立出来，相比于将数据和代码耦合存放会有很大的优势：</p>
+<ol>
+<li>轻松实现保存和读取。</li>
+<li>轻松实现撤销和时光回朔。</li>
+<li>保存数据快照方便Debug。</li>
+</ol>
+<p>在开发比较复杂的项目时，集中管理状态会使得开发过程更加可控。</p>
+<p><strong>全文完</strong></p>
+
+</article>
+
+      <footer>
+  <div class="footer">
+    &copy; 2015-2016 Yewmint, All rights reserved.
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>
