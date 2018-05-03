@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="shortcut icon" href="/img/favicon.ico">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/Torpedo.css">
+  <link rel="stylesheet" href="/css/yewmint.css">
+  <title>Mintew 基础用法 | Yewth</title>
+</head>
+
+  <body>
+    <div id="wrapper">
+      <header id="page-header">
+  <div id="header-title">
+    <a href="/">Yewth</a>
+  </div>
+  <div id="header-nav">
+    <ul>
+      
+        <li><a target="_blank" class="menu-item " href="/">Index</a></li>
+      
+        <li><a target="_blank" class="menu-item " href="https://github.com/yewmint">GITHUB</a></li>
+      
+    </ul>
+</header>
+
+      <article class="article">
+  <h1 id="-" class="article-title">Mintew 基础用法</h1>
+  <p class="article-date">2018-05-03</p>
+  <p><a href="https://github.com/yewmint/mintew" target="_blank" rel="external">Mintew</a>是一个2d游戏引擎，提供了实体树管理，通过组件扩展实体功能，拥有简洁的接口。</p>
+<a id="more"></a>
+<h2 id="引擎结构"><a href="#引擎结构" class="headerlink" title="引擎结构"></a>引擎结构</h2><p><img src="/images/mintew.png" alt="结构"></p>
+<p>特点：</p>
+<ul>
+<li>提供树状实体管理，轻松复用实体组合</li>
+<li>提供组件接口，用于扩展实体功能</li>
+<li>提供强大的资源管理</li>
+<li>WebGL加速渲染图片和形状</li>
+<li>易用的声源系统</li>
+<li>灵活的字体渲染</li>
+<li>原生es6实现，不依赖也不调用任何第三方库</li>
+</ul>
+<p><code>src/lifeframe</code>包含一个简单的DEMO</p>
+<h2 id="游戏实例"><a href="#游戏实例" class="headerlink" title="游戏实例"></a>游戏实例</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> app = <span class="keyword">new</span> Game(<span class="string">'root'</span>, <span class="number">480</span>, <span class="number">800</span>)</div><div class="line">app.run(<span class="keyword">async</span> () =&gt; &#123; <span class="comment">/* init stuff */</span> &#125;)</div></pre></td></tr></table></figure>
+<h2 id="资源管理"><a href="#资源管理" class="headerlink" title="资源管理"></a>资源管理</h2><p>引擎将文件名作为索引</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">await</span> app.load([</div><div class="line">  <span class="string">'bg.png'</span>,</div><div class="line">  <span class="string">'bgm.ogg'</span>,</div><div class="line">])</div></pre></td></tr></table></figure>
+<h2 id="游戏实体"><a href="#游戏实体" class="headerlink" title="游戏实体"></a>游戏实体</h2><p>创建背景图精灵并放入树结构</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> bg = app.entity()</div><div class="line"></div><div class="line"><span class="comment">// attach sprite component to render image</span></div><div class="line">bg.attach(<span class="string">'sprite'</span>, <span class="string">'bg'</span>)</div><div class="line">app.root.addChild(bg)</div></pre></td></tr></table></figure>
+<h2 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h2><p>创建鼠标点击回调</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bg.attach(<span class="string">'click'</span>, (x, y) =&gt; <span class="keyword">this</span>._handleClick(x, y))</div></pre></td></tr></table></figure>
+<h2 id="文字"><a href="#文字" class="headerlink" title="文字"></a>文字</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> textEnt = app.entity()</div><div class="line">textEnt.attach(<span class="string">'text'</span>, <span class="string">'Hello, world!'</span>)</div><div class="line">textEnt.text.setOption(<span class="string">'width'</span>, <span class="number">400</span>)</div><div class="line">textEnt.transform.position.x = <span class="number">240</span></div></pre></td></tr></table></figure>
+<h2 id="实体组合"><a href="#实体组合" class="headerlink" title="实体组合"></a>实体组合</h2><p>引擎推荐复用实体组合，而不是继承</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">create</span> (<span class="params">app, text</span>)</span>&#123;</div><div class="line">  <span class="keyword">let</span> frameEnt = app.entity()</div><div class="line">  frameEnt.attach(<span class="string">'sprite'</span>, <span class="string">'normal-dialog'</span>)</div><div class="line"></div><div class="line">  <span class="comment">// Text is another composition of entities</span></div><div class="line">  <span class="keyword">let</span> textEnt = Text.create(app, text)</div><div class="line"></div><div class="line">  <span class="keyword">let</span> ent = app.entity()</div><div class="line">  ent.addChild(frameEnt)</div><div class="line">  ent.addChild(textEnt)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> ent</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="创建自定义组件"><a href="#创建自定义组件" class="headerlink" title="创建自定义组件"></a>创建自定义组件</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomComponent</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="comment">// return name of component</span></div><div class="line">  <span class="keyword">static</span> name ()&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">'custom-component'</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">constructor</span> (entity, callback)&#123;</div><div class="line">    <span class="keyword">super</span>(entity)</div><div class="line">    <span class="comment">/* init script */</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  update ()&#123;</div><div class="line">    <span class="comment">/* update script */</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  release ()&#123;</div><div class="line">    <span class="keyword">super</span>.release()</div><div class="line">    <span class="comment">/* release script */</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Entity.register(CustomComponent)</div></pre></td></tr></table></figure>
+
+</article>
+
+      <footer>
+  <div class="footer">
+    &copy; 2015-2016 Yewmint, All rights reserved.
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>
