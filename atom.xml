@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mint&#39;s Bay</title>
+  <icon>http://example.com/icon.png</icon>
+  
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2020-10-11T09:31:32.864Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>John Doe</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>死亡搁浅，慢热的浓缩咖啡</title>
+    <link href="http://example.com/2020/09/26/death-stranding/"/>
+    <id>http://example.com/2020/09/26/death-stranding/</id>
+    <published>2020-09-26T06:11:55.000Z</published>
+    <updated>2020-10-11T09:31:32.864Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;第一次接触小岛秀夫，是在《合金装备V：幻痛》中。细节与自由，是幻痛最大的特点。精巧的潜入体验、抓眼球的细节打磨、个性鲜明的人物，让幻痛显得十分独特，也让我惊讶于游戏的沉浸感、体验感能做得如此到位。第一次感受到小岛对于游戏设计的思索，还有对细节体验的痴迷。&lt;/p&gt;
+&lt;p&gt;《死亡搁浅》是小岛离开Konami后，创立独立工作室的第一款游戏。最近PC版发布，我很好奇在这款新作里，小岛又做了哪些令人惊讶的创作，于是第一时间买了一份。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="游戏" scheme="http://example.com/tags/%E6%B8%B8%E6%88%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>光遇，美景与朋友</title>
+    <link href="http://example.com/2020/07/06/sky-cl/"/>
+    <id>http://example.com/2020/07/06/sky-cl/</id>
+    <published>2020-07-06T07:07:38.000Z</published>
+    <updated>2020-09-26T08:14:13.900Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;艺术游戏，是一类充满美感，洗涤心灵的游戏。只需随便走一走，就能让自己享受极致的美。艺术游戏大师陈星汉曾经做了《花》，玩家化身成花瓣，随风在草原上飞驰。最近，陈星汉的最新作品——《光遇》，带着更美好的体验来了。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>白话Git提交树</title>
+    <link href="http://example.com/2019/12/11/git-commit-tree/"/>
+    <id>http://example.com/2019/12/11/git-commit-tree/</id>
+    <published>2019-12-11T13:07:52.000Z</published>
+    <updated>2020-09-26T13:12:55.933Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;版本管理是git的核心功能，是通过“提交树”实现的。最近遇到一个很有意思的网站&lt;a href=&quot;https://learngitbranching.js.org/&quot;&gt;Learn Git Branching&lt;/a&gt;，它用交互小游戏的方式，解释了git提交树的操作。这篇文章不包含任何命令和代码，只是从概念的角度，尝试用最简单的语言，记录下在挑战完关卡后，我对提交树的理解。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>10等于9.999……吗？</title>
+    <link href="http://example.com/2019/12/02/10-equals-9-99/"/>
+    <id>http://example.com/2019/12/02/10-equals-9-99/</id>
+    <published>2019-12-02T07:52:50.000Z</published>
+    <updated>2020-09-26T13:15:05.309Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;这两天看到一个有趣的视频，博主Mathologer尝试证明10等于9.999……的无限循环，视频地址在&lt;a href=&quot;https://youtu.be/SDtFBSjNmm0&quot;&gt;YouTube&lt;/a&gt;。这里记录下他的证明过程，并且补充一下我自己的想法。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>优秀的UI库有什么特点</title>
+    <link href="http://example.com/2019/11/19/features-of-good-ui-library/"/>
+    <id>http://example.com/2019/11/19/features-of-good-ui-library/</id>
+    <published>2019-11-19T08:57:57.000Z</published>
+    <updated>2020-09-26T09:03:21.344Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近在帮项目搭建工具链，其中一个环节，是做出一套To C的UI，磨平用户与算法之间的鸿沟。分析了现有的UI库后，我得出了一套选择的方法。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>如何通过npm获取信用卡密码</title>
+    <link href="http://example.com/2018/01/20/get-credit-card-from-npm/"/>
+    <id>http://example.com/2018/01/20/get-credit-card-from-npm/</id>
+    <published>2018-01-20T10:16:03.000Z</published>
+    <updated>2020-10-11T11:41:31.874Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在Hackernoon上看到一篇有趣的文章，一个黑客描写自己如何利用带病毒的npm包，获取大量用户的隐私信息。原文在&lt;a href=&quot;https://hackernoon.com/im-harvesting-credit-card-numbers-and-passwords-from-your-site-here-s-how-9a8cb347c5b5&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
+  
+</feed>
