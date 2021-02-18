@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="shortcut icon" href="/img/favicon.ico">
+  
+<link rel="stylesheet" href="/css/normalize.css">
+
+  
+<link rel="stylesheet" href="/css/fontello-embedded.css">
+
+  
+<link rel="stylesheet" href="/css/yewth-plus.css">
+
+  <title>提取游戏模型：Hook的概念与流程 | Mint's Bay</title>
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Mint's Bay" type="application/atom+xml">
+</head>
+
+  <body>
+    <div id="wrapper">
+      <header id="page-header">
+  <div id="header-title">
+    <img id="logo" src="/img/logo.png" alt="logo" width="64" height="64" />
+    <a href="/">Mint's Bay</a>
+  </div>
+  <div id="header-nav">
+    <a href="https://www.artstation.com/yewmint" target="_blank" class="nav-item"><i class="icon-brush"></i> ArtStation</a>
+    <a href="https://github.com/yewmint" target="_blank" class="nav-item"><i class="icon-github"></i> GitHub</a>
+    <a href="/archives" class="nav-item"><i class="icon-box"></i> Archive</a>
+    <!-- <a href="/atom.xml" class="nav-item"><i class="icon-rss"></i> Feed</a> -->
+  </div>
+</header>
+
+      <div id="body-wrapper">
+        <article class="article">
+  <h1 id="-" class="article-title">提取游戏模型：Hook的概念与流程</h1>
+  <p class="article-date">
+    <i class="icon-calendar-1"></i> 2021-02-18
+  </p>
+  <p>最近在分析游戏动画的实现方式，需要提取游戏模型。对于个别游戏，常用的截帧工具RenderDoc与GPA无法正常使用。因此我通过Hook DirectX API，实现了游戏模型的提取。本文借助这个案例，介绍了Hook的概念和Hook DirectX API的流程，不包含代码。</p>
+<a id="more"></a>
+
+<h2 id="1-问题分析"><a href="#1-问题分析" class="headerlink" title="1. 问题分析"></a>1. 问题分析</h2><p>在分析游戏动画时，需要判断动画是否采用BlendShapes方案。对于老游戏比较容易判断，因为BlendShapes几乎都在CPU中计算，只要截取shader的输入模型，观察是否形变就能确定了。</p>
+<p>但实际操作时，常用的RenderDoc/GPA等截帧工具，对于个别游戏会截帧失败。例如分析《模拟人生4》时，RenderDoc无法挂入，GPA则在截帧时使游戏崩溃，导致无法获取输入模型。</p>
+<p><img src="/images/hook-extract-game-model/1.webp" alt="1"></p>
+<p>初步检查了下游戏后，我发现《模拟人生4》没有反调试等保护功能，于是打算手动Hook DirectX API，通过API来截取顶点Buffer中的模型数据。为了达到这一点，我需要：</p>
+<ol>
+<li>获取DirectX中Buffer和Index的格式与数据</li>
+<li>为了（1），需要Hook DirectX中的特定API</li>
+<li>为了（2），需要Direct X中特定API的地址</li>
+<li>需要在游戏进程中，执行额外的代码</li>
+</ol>
+<p>根据上面的问题分拆，就能得到解决方法：</p>
+<ol>
+<li>通过注入dll执行额外代码</li>
+<li>通过vtable获取API地址</li>
+<li>通过inline hook劫持API</li>
+<li>通过分析Buffer格式获取顶点数据</li>
+</ol>
+<h2 id="2-DLL注入"><a href="#2-DLL注入" class="headerlink" title="2. DLL注入"></a>2. DLL注入</h2><p>如果能让进程调用自己编写的dll，这样就可以在进程内执行特定代码，访问进程本身的虚拟内存，达到Hook函数的目的。这个过程被称作「DLL注入」，注入的方法大致分为：</p>
+<ul>
+<li>注册表 - 对所有使用user32.dll的进程注入</li>
+<li>替换dll - 对所有使用此dll的进程注入</li>
+<li>动态注入 - 对运行中的特定进程注入</li>
+</ul>
+<p><img src="/images/hook-extract-game-model/2.webp" alt="2"></p>
+<p>为了提取模型，只需要在单个游戏进程中，Hook其中一帧就行了，所以「动态注入」是最适合的方式。动态注入的流程大致是：</p>
+<ol>
+<li>打开目标进程</li>
+<li>在目标进程内，为dll开辟足够内存</li>
+<li>将dll内容拷贝到目标内存</li>
+<li>控制远程进程执行LoadLibrary，从而运行自定义代码</li>
+</ol>
+<p>上面的流程中，最复杂的是第四步，因为目标进程只会按照原有的程序执行，必须通过一些特殊hack来打断原始程序，让进程执行读取dll的代码，再恢复原始程序的执行。</p>
+<p>关于远程执行的详细介绍，可以在Open Security Research的<a target="_blank" rel="noopener" href="http://blog.opensecurityresearch.com/2013/01/windows-dll-injection-basics.html">这篇文章</a>找到。关于远程执行的详细实现代码，可以在fdiskyou的<a target="_blank" rel="noopener" href="https://github.com/fdiskyou/injectAllTheThings">GitHub仓库</a>找到。</p>
+<p>这里我直接使用开源DLL注入工具<a target="_blank" rel="noopener" href="https://github.com/DarthTon/Xenos">Xenos</a>。</p>
+<h2 id="3-通过vtable获取API地址"><a href="#3-通过vtable获取API地址" class="headerlink" title="3. 通过vtable获取API地址"></a>3. 通过vtable获取API地址</h2><p>为了Hook特定的目标函数，需要首先获取函数的地址，然后改写函数内容。常见获取API地址的方法有这些：</p>
+<ul>
+<li>静态分析 - 根据导出表或pdb来搜索函数名</li>
+<li>特征匹配 - 根据函数头的特征码匹配</li>
+<li>vtable - 根据虚函数表</li>
+</ul>
+<p>「静态分析」适用于导出表或pdb包含函数名的情况，可以直接拿到地址，但自动获取较为麻烦，更多用于人工分析。「特征匹配」则是根据二进制特征，匹配出函数头的位置，由于要求二进制的一致性，容易出现不兼容问题。「vtable」则是根据虚函数的vtable表，来间接获取地址，适用性较高。</p>
+<p>在DirectX9中，所有的绘制操作都需要通过「Device接口」。Device接口是一个COM接口，它的函数不会直接导出，而是通过COM组件提供，所以无法从导出表获取地址。</p>
+<p>根据《COM技术内幕》，任何COM接口都是纯虚类，所以它们的函数都在vtable中，并且由多个接口共享，如下图所示：</p>
+<p><img src="/images/hook-extract-game-model/4-COM.webp" alt="4-COM"></p>
+<p>所以此时可以用「vtable」法，从而访问到全部虚函数地址，方法流程是：</p>
+<ol>
+<li>按照正常流程，构造一个新device</li>
+<li>获取device的头部指针，即vtbl指针</li>
+<li>将虚函数表拷出备用</li>
+<li>释放device</li>
+</ol>
+<p>由此，得到了Device接口的全部函数地址，此时查阅<a target="_blank" rel="noopener" href="https://www.unknowncheats.me/forum/direct3d/66594-d3d9-vtables.html">vtable函数序号表</a>，便能得到特定函数的地址。</p>
+<h2 id="4-Hook绘制函数"><a href="#4-Hook绘制函数" class="headerlink" title="4. Hook绘制函数"></a>4. Hook绘制函数</h2><p>在内存中，函数是一段二进制机器码，应用程序通过函数的地址来调用函数。如果能修改函数的机器码，就可以修改函数的功能。为了获取模型数据，需要修改DX的绘制函数，使其在绘制前提取绘制数据。</p>
+<p>Inline Hook是一种常见方法，它将函数的首个指令修改为jmp指令，直接跳转到自定义函数，执行完后再跳转回原始函数，Hook前后的函数如图：</p>
+<p><img src="/images/hook-extract-game-model/5.webp" alt="5"></p>
+<p>左边是原始过程，函数分为前言和执行两部分，执行完后返回调用者。右边是Hook后的函数流程，其中：</p>
+<ul>
+<li>目标函数前言被修改为jmp，跳转到Hook函数</li>
+<li>「Hook函数」是注入的dll函数，接受和原函数一致的参数，可实现任意功能</li>
+<li>「跳板」在执行过程中动态创建的函数，用来正常调用原始函数。</li>
+</ul>
+<p>Hook后的执行流程如下：</p>
+<ol>
+<li>调用者调用函数</li>
+<li>jmp将执行跳转到Hook函数，执行额外功能</li>
+<li>跳转到跳板函数，执行原函数前言</li>
+<li>跳转回原函数，继续执行</li>
+<li>返回调用者</li>
+</ol>
+<p>详细的Hook流程可以在BananaMafia的<a target="_blank" rel="noopener" href="https://bananamafia.dev/post/d3dhook/">博客文章</a>中找到。整个过程的难点，在于要正确获取前言的长度，并且构造合适的跳板函数。前言长度可以通过IDA分析得到，跳板函数的构造可以通过许多开源库实现，例如微软开源的<a target="_blank" rel="noopener" href="https://github.com/microsoft/Detours">Detours</a>。</p>
+<h2 id="5-获取模型顶点数据"><a href="#5-获取模型顶点数据" class="headerlink" title="5. 获取模型顶点数据"></a>5. 获取模型顶点数据</h2><p>Hook到绘制函数后，就可以在绘制之前，读取绘制所需要的数据了。此时可以拿到以下的数据：</p>
+<ul>
+<li>绘制函数的参数</li>
+<li>查询StreamSource，获取顶点Buffer内存数据和格式描述</li>
+<li>查询索引Buffer，获取索引Buffer内存数据和格式描述</li>
+<li>顶点描述信息</li>
+</ul>
+<p><img src="/images/hook-extract-game-model/3.webp" alt="3"></p>
+<p>获取模型定点数据的流程如下：</p>
+<ol>
+<li>获取顶点描述（Vertex Declaration），搜索包含位置信息的描述（Usage = 0）</li>
+<li>根据绘制函数参数，得到顶点范围，将此范围的顶点内存取出（Vertex Buffer Lock）</li>
+<li>根据顶点描述中的格式信息（Offset/Type），将内存中的顶点位置数据写入obj文件</li>
+<li>根据绘制函数参数，得到索引范围，将此范围的索引内存取出（Index Buffer Lock）</li>
+<li>根据绘制类型（Primitive Type），将内存中的索引数据写入obj文件</li>
+</ol>
+<p>这一步的核心是「解释内存」：通过DX获取元数据，从中分析出内存格式，将顶点信息提取出来。由于DX使用了许多提升性能的设计，所以数据格式的理解会比较绕，需要多参考<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/d3d9/nf-d3d9-idirect3ddevice9-drawindexedprimitive">官方文档</a>。</p>
+<h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p>Hook是一种利用Windows/x86的实现细节，来修改原有函数的实现，达到增加功能的目的。通过Hook，可以实现增强调试、破解收费、透视外挂、修改数据等许多功能，为业务带来更多可能性。</p>
+<p>这篇文章通过实际的例子，即从游戏进程中抓取游戏模型，来介绍了DLL注入、定位API地址、Hook函数和提取模型数据，展示了Hook的概念与流程。如果需要了解详细实现，可以继续阅读文章里的链接，或者参考<a target="_blank" rel="noopener" href="https://guidedhacking.com/threads/how-to-hook-directx-9-direct3d-hooking-tutorials.10402/">Guided Hacking的文章</a>。</p>
+
+</article>
+
+      </div>
+      <footer>
+  <div class="footer">
+    LICENSE: Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+    <i class="icon-cc"></i>
+    <i class="icon-cc-by"></i>
+    <i class="icon-cc-nc"></i>
+    <i class="icon-cc-sa"></i>
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>

@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-12-13T13:51:44.552Z</updated>
+  <updated>2021-02-18T01:54:12.961Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,21 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>提取游戏模型：Hook的概念与流程</title>
+    <link href="http://example.com/2021/02/18/hook-extract-game-model/"/>
+    <id>http://example.com/2021/02/18/hook-extract-game-model/</id>
+    <published>2021-02-18T01:08:50.000Z</published>
+    <updated>2021-02-18T01:54:12.961Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近在分析游戏动画的实现方式，需要提取游戏模型。对于个别游戏，常用的截帧工具RenderDoc与GPA无法正常使用。因此我通过Hook DirectX API，实现了游戏模型的提取。本文借助这个案例，介绍了Hook的概念和Hook DirectX API的流程，不包含代码。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>蝙蝠侠：阿克姆骑士</title>
