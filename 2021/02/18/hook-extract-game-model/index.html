@@ -36,9 +36,12 @@
 
       <div id="body-wrapper">
         <article class="article">
-  <h1 id="-" class="article-title">提取游戏模型：Hook的概念与流程</h1>
+  <h1 id="-" class="article-title">
+    提取游戏模型：Hook的概念与流程
+  </h1>
   <p class="article-date">
-    <i class="icon-calendar-1"></i> 2021-02-18
+    <i class="icon-calendar-1"></i>
+    2021-02-18
   </p>
   <p>最近在分析游戏动画的实现方式，需要提取游戏模型。对于个别游戏，常用的截帧工具RenderDoc与GPA无法正常使用。因此我通过Hook DirectX API，实现了游戏模型的提取。本文借助这个案例，介绍了Hook的概念和Hook DirectX API的流程，不包含代码。</p>
 <a id="more"></a>
@@ -133,8 +136,18 @@
 <h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p>Hook是一种利用Windows/x86的实现细节，来修改原有函数的实现，达到增加功能的目的。通过Hook，可以实现增强调试、破解收费、透视外挂、修改数据等许多功能，为业务带来更多可能性。</p>
 <p>这篇文章通过实际的例子，即从游戏进程中抓取游戏模型，来介绍了DLL注入、定位API地址、Hook函数和提取模型数据，展示了Hook的概念与流程。如果需要了解详细实现，可以继续阅读文章里的链接，或者参考<a target="_blank" rel="noopener" href="https://guidedhacking.com/threads/how-to-hook-directx-9-direct3d-hooking-tutorials.10402/">Guided Hacking的文章</a>。</p>
 
-</article>
 
+  <div class="utterances-container">
+    <script 
+      src="https://utteranc.es/client.js" 
+      repo="yewmint/blog-comment" 
+      issue-term="提取游戏模型：Hook的概念与流程"
+      theme="github-light" 
+      crossorigin="anonymous" 
+      async>
+    </script>
+  </div>
+</article>
       </div>
       <footer>
   <div class="footer">
