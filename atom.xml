@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-02-28T13:13:31.826Z</updated>
+  <updated>2021-03-07T08:10:41.896Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,21 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>书籍推荐《素描的技术》</title>
+    <link href="http://example.com/2021/03/07/recommendation-sketch-technique/"/>
+    <id>http://example.com/2021/03/07/recommendation-sketch-technique/</id>
+    <published>2021-03-07T08:02:48.000Z</published>
+    <updated>2021-03-07T08:10:41.896Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;看到一本很适合绘画新手的书《素描的技术》，它不只是单单讲画某种东西的技术，而是一种像画家一样思考的技术，这里推荐给每个初学绘画的人。&lt;/p&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>女巫审判与资本主义</title>
